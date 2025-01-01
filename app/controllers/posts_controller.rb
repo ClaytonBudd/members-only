@@ -1,21 +1,27 @@
 class PostsController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!, only[:new, :create]
 
   def new
+    @post = Post.new
   end
 
   def create
+    @post = current_user.posts.new(post_params)
+
+    if @post.save
+      redirect_to @index
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def index
+    @posts = Post.all
   end
 
   private
-
-  def require_login
-    unless logged_in?
-      flash[:error] = "You must be signed in to make a post"
-      redirect_to new_login_url
+    def post_params
+      params.require(:article).permit(:[title, :body])
     end
-  end
+
 end
