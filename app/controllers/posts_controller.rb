@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only[:new, :create]
+  before_action :authenticate_user!
 
   def new
     @post = Post.new
@@ -8,8 +8,9 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
 
+
     if @post.save
-      redirect_to @index
+      redirect_to action: :index
     else
       render :new, status: :unprocessable_entity
     end
@@ -21,7 +22,7 @@ class PostsController < ApplicationController
 
   private
     def post_params
-      params.require(:article).permit(:[title, :body])
+      params.require(:post).permit([:title, :body])
     end
 
 end
