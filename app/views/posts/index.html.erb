@@ -1,0 +1,12 @@
+<h1>Posts#index</h1>
+  <% @post.each do |post| %>
+    <%= post.title %>
+    <%= post.body %>
+    <% if user_signed_in?%>
+      <%= "author id:" %>
+      <%= post.user_id %>
+
+  <%end%>
+<%end%>  
+
+<%= link_to "sign out", destroy_user_session_path, data: { turbo_method: :delete } %>
